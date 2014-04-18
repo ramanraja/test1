@@ -1,0 +1,37 @@
+To register your application with github: go to
+
+https://github.com/settings/applications
+
+Create an application named, say: RajasApplication1 
+
+Use http://localhost:1410 as the application URL and the callback url
+
+Note down the Client ID, for example:  84a36-clientID-1181fc
+
+and the Client Secret. for example: e9c6c-client-secret-c870b2
+
+
+
+In R, run the following application:
+====================================
+
+You may need to run the code in the base R package and not R studio.
+--------------------------------------------------------------------
+
+library(httr)
+
+oauth_endpoints("github")
+
+myapp <- oauth_app("RajasApplication1" ,key="84a36-clientID-1181fc", secret="e9c6c-client-secret-c870b2")
+
+# 3. Get OAuth credentials
+
+github_token <- oauth2.0_token(oauth_endpoints("github"), myapp)
+
+# 4. Use the API
+
+req <- GET("https://api.github.com/rate_limit", config(token = github_token))
+
+stop_for_status(req)
+
+content(req)
